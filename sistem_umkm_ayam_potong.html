@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Informasi UMKM Ayam Potong</title>
+<style>
+:root{--red:#b9232c;--dark:#74151c;--bg:#f4f6f9;--ink:#202633;--muted:#6b7280;--line:#e5e7eb;--green:#16834a}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(120deg,var(--dark),var(--red));color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:20px;margin:0 0 5px}header p{margin:0;font-size:13px;opacity:.9}
+.layout{display:flex;min-height:calc(100vh - 76px)}aside{width:220px;background:#fff;border-right:1px solid var(--line);padding:16px 12px}
+.navbtn{width:100%;border:0;background:transparent;text-align:left;padding:12px;border-radius:8px;margin:3px 0;color:#374151;cursor:pointer;font-size:14px}
+.navbtn:hover,.navbtn.active{background:#fff0f0;color:var(--red);font-weight:bold}
+main{padding:22px;width:calc(100% - 220px);max-width:1400px;margin:0 auto}
+.page{display:none}.page.active{display:block}.title{margin:0 0 5px;font-size:23px}.subtitle{color:var(--muted);margin:0 0 20px;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:18px}
+.card,.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:0 2px 7px #17203308}
+.card small{color:var(--muted)}.card strong{display:block;font-size:23px;margin-top:10px;color:var(--red)}
+.panel{margin:15px 0}.panel h3{margin:0 0 14px;font-size:17px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px}
+form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+label{display:block;font-size:13px;font-weight:bold;margin:8px 0 5px}
+input,select,textarea{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:7px;background:#fff;font:inherit}
+button{cursor:pointer}.btn{border:0;border-radius:7px;padding:10px 14px;background:var(--red);color:#fff;font-weight:bold;margin:8px 5px 0 0}
+.btn:hover{background:var(--dark)}.btn.secondary{background:#e5e7eb;color:#333}.btn.green{background:var(--green)}.btn.danger{background:#b91c1c}
+.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:600px;font-size:13px}
+th,td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:left}th{background:#fff5f5;color:#7f1d1d}
+.empty{text-align:center;color:var(--muted);padding:22px}.muted{color:var(--muted);font-size:13px}.badge{padding:4px 8px;border-radius:20px;background:#fff0f0;color:var(--red);font-size:12px}
+.actions button{padding:6px 9px;margin:2px;font-size:12px}.notice{padding:11px;border-radius:8px;background:#fff7ed;color:#9a3412;font-size:13px;margin:12px 0}
+footer{text-align:center;color:var(--muted);padding:18px;font-size:12px}
+@media(max-width:760px){.layout{display:block}aside{width:100%;display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:8px}.navbtn{white-space:nowrap;width:auto;margin:0 3px}main{width:100%;padding:15px}header h1{font-size:17px}}
+@media print{header,aside,.no-print,footer{display:none!important}.layout{display:block}main{width:100%;padding:0}.page{display:none!important}.page.active{display:block!important}.panel,.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1 id="headerName">🐔 Berkah Jaya Ayam Potong</h1><p>Sistem Informasi Pengelolaan UMKM</p></div>
+  <div id="today"></div>
+</header>
+<div class="layout">
+<aside class="no-print">
+  <button class="navbtn active" data-page="dashboard">📊 Dashboard</button>
+  <button class="navbtn" data-page="products">📦 Data Produk</button>
+  <button class="navbtn" data-page="sales">🛒 Penjualan</button>
+  <button class="navbtn" data-page="purchases">🚚 Pembelian Stok</button>
+  <button class="navbtn" data-page="customers">👥 Pelanggan</button>
+  <button class="navbtn" data-page="expenses">💸 Pengeluaran</button>
+  <button class="navbtn" data-page="reports">📑 Laporan</button>
+  <button class="navbtn" data-page="settings">⚙️ Pengaturan</button>
+</aside>
+<main>
+<section class="page active" id="dashboard">
+  <h2 class="title">Dashboard</h2><p class="subtitle">Ringkasan aktivitas usaha ayam potong.</p>
+  <div class="cards">
+    <div class="card"><small>Total Penjualan</small><strong id="dSales">Rp0</strong></div>
+    <div class="card"><small>Total Modal Barang Terjual</small><strong id="dCost">Rp0</strong></div>
+    <div class="card"><small>Laba Kotor</small><strong id="dProfit">Rp0</strong></div>
+    <div class="card"><small>Total Pengeluaran</small><strong id="dExpense">Rp0</strong></div>
+    <div class="card"><small>Perkiraan Laba Bersih</small><strong id="dNet">Rp0</strong></div>
+    <div class="card"><small>Jumlah Stok Ayam</small><strong id="dStock">0 kg</strong></div>
+  </div>
+  <div class="grid2">
+    <div class="panel"><h3>Informasi Usaha</h3><p id="businessInfo" class="muted">Berkah Jaya Ayam Potong</p></div>
+    <div class="panel"><h3>Petunjuk Singkat</h3><p class="muted">Tambahkan produk terlebih dahulu. Catat pembelian untuk menambah stok, lalu catat penjualan saat ada pelanggan. Data disimpan di browser perangkat ini.</p></div>
+  </div>
+  <div class="panel"><h3>Transaksi Penjualan Terbaru</h3><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Pelanggan</th><th>Produk</th><th>Jumlah</th><th>Total</th></tr></thead><tbody id="recentSales"></tbody></table></div></div>
+</section>
+
+<section class="page" id="products">
+  <h2 class="title">Data Produk</h2><p class="subtitle">Tambah, ubah, dan hapus produk yang dijual.</p>
+  <div class="panel">
+    <h3 id="productFormTitle">Tambah Produk</h3>
+    <form id="productForm"><input type="hidden" id="productId">
+      <div class="row">
+        <div><label>Nama produk</label><input id="pName" required placeholder="Contoh: Ayam potong segar"></div>
+        <div><label>Satuan</label><select id="pUnit"><option value="kg">Kilogram (kg)</option><option value="ekor">Ekor</option><option value="pack">Pack</option></select></div>
+        <div><label>Harga jual per satuan (Rp)</label><input id="pPrice" type="number" min="0" required></div>
+        <div><label>Harga modal per satuan (Rp)</label><input id="pCost" type="number" min="0" required></div>
+        <div><label>Stok awal</label><input id="pStock" type="number" min="0" step="0.01" value="0" required></div>
+      </div><button class="btn" type="submit">Simpan Produk</button><button class="btn secondary" type="button" onclick="resetProductForm()">Batal</button>
+    </form>
+  </div>
+  <div class="panel"><h3>Daftar Produk</h3><div class="tablewrap"><table><thead><tr><th>Produk</th><th>Satuan</th><th>Harga Jual</th><th>Modal</th><th>Stok</th><th>Aksi</th></tr></thead><tbody id="productRows"></tbody></table></div></div>
+</section>
+
+<section class="page" id="sales">
+  <h2 class="title">Penjualan / Kasir</h2><p class="subtitle">Catat pembelian pelanggan. Stok akan berkurang otomatis.</p>
+  <div class="panel"><h3>Transaksi Baru</h3><form id="saleForm">
+    <div class="row">
+      <div><label>Nama pelanggan</label><input id="sCustomer" placeholder="Pelanggan umum"></div>
+      <div><label>Produk</label><select id="sProduct" required></select></div>
+      <div><label>Jumlah</label><input id="sQty" type="number" min="0.01" step="0.01" required></div>
+      <div><label>Harga jual per satuan (Rp)</label><input id="sPrice" type="number" min="0" required></div>
+    </div><p class="muted" id="saleStockInfo">Pilih produk untuk melihat stok.</p>
+    <button class="btn green" type="submit">Simpan Penjualan</button>
+  </form></div>
+  <div class="panel"><h3>Riwayat Penjualan</h3><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Pelanggan</th><th>Produk</th><th>Jumlah</th><th>Total</th><th>Modal</th><th>Laba</th></tr></thead><tbody id="salesRows"></tbody></table></div></div>
+</section>
+
+<section class="page" id="purchases">
+  <h2 class="title">Pembelian Stok</h2><p class="subtitle">Catat stok ayam atau barang yang baru dibeli dari pemasok.</p>
+  <div class="panel"><h3>Tambah Stok</h3><form id="purchaseForm">
+    <div class="row">
+      <div><label>Produk</label><select id="bProduct" required></select></div>
+      <div><label>Jumlah dibeli</label><input id="bQty" type="number" min="0.01" step="0.01" required></div>
+      <div><label>Modal per satuan (Rp)</label><input id="bCost" type="number" min="0" required></div>
+      <div><label>Nama pemasok (opsional)</label><input id="bSupplier" placeholder="Nama pemasok"></div>
+    </div><button class="btn" type="submit">Simpan Pembelian</button>
+  </form></div>
+  <div class="panel"><h3>Riwayat Pembelian Stok</h3><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Pemasok</th><th>Produk</th><th>Jumlah</th><th>Total Modal</th></tr></thead><tbody id="purchaseRows"></tbody></table></div></div>
+</section>
+
+<section class="page" id="customers">
+  <h2 class="title">Data Pelanggan</h2><p class="subtitle">Simpan daftar pelanggan tetap usaha.</p>
+  <div class="panel"><h3>Tambah Pelanggan</h3><form id="customerForm"><div class="row">
+    <div><label>Nama pelanggan</label><input id="cName" required></div>
+    <div><label>Nomor telepon (opsional)</label><input id="cPhone" type="tel"></div>
+    <div><label>Alamat (opsional)</label><input id="cAddress"></div>
+  </div><button class="btn" type="submit">Tambah Pelanggan</button></form></div>
+  <div class="panel"><h3>Daftar Pelanggan</h3><div class="tablewrap"><table><thead><tr><th>Nama</th><th>Telepon</th><th>Alamat</th><th>Aksi</th></tr></thead><tbody id="customerRows"></tbody></table></div></div>
+</section>
+
+<section class="page" id="expenses">
+  <h2 class="title">Pengeluaran</h2><p class="subtitle">Catat biaya transportasi, listrik, air, kemasan, dan biaya lainnya.</p>
+  <div class="panel"><h3>Tambah Pengeluaran</h3><form id="expenseForm"><div class="row">
+    <div><label>Keterangan</label><input id="eDesc" required placeholder="Contoh: Biaya transportasi"></div>
+    <div><label>Jumlah (Rp)</label><input id="eAmount" type="number" min="1" required></div>
+    <div><label>Tanggal</label><input id="eDate" type="date" required></div>
+  </div><button class="btn" type="submit">Simpan Pengeluaran</button></form></div>
+  <div class="panel"><h3>Daftar Pengeluaran</h3><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jumlah</th><th>Aksi</th></tr></thead><tbody id="expenseRows"></tbody></table></div></div>
+</section>
+
+<section class="page" id="reports">
+  <h2 class="title">Laporan Usaha</h2><p class="subtitle">Rekap transaksi, pemasukan, modal barang, dan pengeluaran.</p>
+  <div class="cards">
+    <div class="card"><small>Pendapatan Penjualan</small><strong id="rSales">Rp0</strong></div>
+    <div class="card"><small>Modal Barang Terjual</small><strong id="rCost">Rp0</strong></div>
+    <div class="card"><small>Laba Kotor</small><strong id="rGross">Rp0</strong></div>
+    <div class="card"><small>Pengeluaran Operasional</small><strong id="rExpense">Rp0</strong></div>
+    <div class="card"><small>Laba Bersih Perkiraan</small><strong id="rNet">Rp0</strong></div>
+  </div>
+  <div class="panel"><h3>Rekap Penjualan</h3><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Pelanggan</th><th>Produk</th><th>Jumlah</th><th>Pendapatan</th><th>Laba Kotor</th></tr></thead><tbody id="reportRows"></tbody></table></div>
+  <button class="btn" onclick="window.print()">Cetak Laporan</button><button class="btn secondary" onclick="exportCSV()">Unduh CSV</button></div>
+  <div class="notice">Laba bersih perkiraan = laba kotor dari penjualan dikurangi pengeluaran operasional yang dicatat. Pembelian stok dicatat sebagai penambahan persediaan; modal barang terjual dihitung dari modal produk saat transaksi.</div>
+</section>
+
+<section class="page" id="settings">
+  <h2 class="title">Pengaturan</h2><p class="subtitle">Atur identitas usaha dan kelola data aplikasi.</p>
+  <div class="panel"><h3>Identitas Usaha</h3><label>Nama usaha</label><input id="businessName" value="Berkah Jaya Ayam Potong"><label>Nama pemilik (opsional)</label><input id="ownerName" placeholder="Nama pemilik"><button class="btn" onclick="saveSettings()">Simpan Pengaturan</button></div>
+  <div class="panel"><h3>Cadangan Data</h3><p class="muted">Unduh salinan data agar bisa disimpan. Impor dapat memulihkan data dari file JSON cadangan aplikasi ini.</p><button class="btn green" onclick="backupData()">Unduh Cadangan</button><label>Impor file cadangan JSON</label><input type="file" id="importFile" accept=".json,application/json"><button class="btn" onclick="importData()">Impor Data</button></div>
+  <div class="panel"><h3>Reset Aplikasi</h3><p class="muted">Tindakan ini menghapus semua produk, transaksi, pelanggan, dan pengeluaran dari browser ini.</p><button class="btn danger" onclick="resetAll()">Hapus Semua Data</button></div>
+</section>
+</main>
+</div>
+<footer>© Sistem Informasi UMKM Ayam Potong — Data tersimpan secara lokal di browser.</footer>
+
+<script>
+const KEY='umkmAyamPotong_v1';
+const defaultData={businessName:'Berkah Jaya Ayam Potong',ownerName:'',products:[],sales:[],purchases:[],customers:[],expenses:[]};
+let db=loadData();
+function loadData(){try{return {...defaultData,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){return structuredClone(defaultData)}}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function money(n){return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(n)||0)}
+function num(n){return Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:2})}
+function today(){return new Date().toISOString().slice(0,10)}
+function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===name));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===name))}
+document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+function totals(){let sales=db.sales.reduce((a,x)=>a+x.total,0),cost=db.sales.reduce((a,x)=>a+x.cost,0),expense=db.expenses.reduce((a,x)=>a+x.amount,0);return {sales,cost,gross:sales-cost,expense,net:sales-cost-expense}}
+function renderAll(){renderDashboard();renderProducts();renderSelects();renderSales();renderPurchases();renderCustomers();renderExpenses();renderReports();document.getElementById('headerName').textContent='🐔 '+db.businessName;document.getElementById('businessInfo').textContent=db.businessName+(db.ownerName?' • Pemilik: '+db.ownerName:'');}
+function renderDashboard(){let t=totals();[['dSales',t.sales],['dCost',t.cost],['dProfit',t.gross],['dExpense',t.expense],['dNet',t.net]].forEach(([i,v])=>document.getElementById(i).textContent=money(v));document.getElementById('dStock').textContent=num(db.products.reduce((a,p)=>a+p.stock,0))+' unit';let rows=db.sales.slice(-5).reverse().map(s=>`<tr><td>${s.date}</td><td>${safe(s.customer)}</td><td>${safe(s.productName)}</td><td>${num(s.qty)} ${safe(s.unit)}</td><td>${money(s.total)}</td></tr>`).join('');document.getElementById('recentSales').innerHTML=rows||'<tr><td colspan="5" class="empty">Belum ada transaksi.</td></tr>'}
+function renderProducts(){document.getElementById('productRows').innerHTML=db.products.map(p=>`<tr><td>${safe(p.name)}</td><td>${safe(p.unit)}</td><td>${money(p.price)}</td><td>${money(p.cost)}</td><td>${num(p.stock)}</td><td class="actions"><button class="btn secondary" onclick="editProduct('${p.id}')">Edit</button><button class="btn danger" onclick="deleteProduct('${p.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">Belum ada produk. Tambahkan produk di formulir atas.</td></tr>'}
+function renderSelects(){let opts=db.products.map(p=>`<option value="${p.id}">${safe(p.name)} (stok: ${num(p.stock)} ${safe(p.unit)})</option>`).join('');['sProduct','bProduct'].forEach(i=>document.getElementById(i).innerHTML=opts||'<option value="">Tambahkan produk terlebih dahulu</option>');updateSaleProduct()}
+function renderSales(){document.getElementById('salesRows').innerHTML=db.sales.slice().reverse().map(s=>`<tr><td>${s.date}</td><td>${safe(s.customer)}</td><td>${safe(s.productName)}</td><td>${num(s.qty)} ${safe(s.unit)}</td><td>${money(s.total)}</td><td>${money(s.cost)}</td><td>${money(s.total-s.cost)}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">Belum ada penjualan.</td></tr>'}
+function renderPurchases(){document.getElementById('purchaseRows').innerHTML=db.purchases.slice().reverse().map(x=>`<tr><td>${x.date}</td><td>${safe(x.supplier||'-')}</td><td>${safe(x.productName)}</td><td>${num(x.qty)} ${safe(x.unit)}</td><td>${money(x.total)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">Belum ada pembelian stok.</td></tr>'}
+function renderCustomers(){document.getElementById('customerRows').innerHTML=db.customers.map(c=>`<tr><td>${safe(c.name)}</td><td>${safe(c.phone||'-')}</td><td>${safe(c.address||'-')}</td><td><button class="btn danger" onclick="deleteCustomer('${c.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty">Belum ada pelanggan.</td></tr>'}
+function renderExpenses(){document.getElementById('expenseRows').innerHTML=db.expenses.slice().reverse().map(e=>`<tr><td>${e.date}</td><td>${safe(e.desc)}</td><td>${money(e.amount)}</td><td><button class="btn danger" onclick="deleteExpense('${e.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty">Belum ada pengeluaran.</td></tr>'}
+function renderReports(){let t=totals();[['rSales',t.sales],['rCost',t.cost],['rGross',t.gross],['rExpense',t.expense],['rNet',t.net]].forEach(([i,v])=>document.getElementById(i).textContent=money(v));document.getElementById('reportRows').innerHTML=db.sales.slice().reverse().map(s=>`<tr><td>${s.date}</td><td>${safe(s.customer)}</td><td>${safe(s.productName)}</td><td>${num(s.qty)} ${safe(s.unit)}</td><td>${money(s.total)}</td><td>${money(s.total-s.cost)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">Belum ada data laporan.</td></tr>'}
+document.getElementById('productForm').addEventListener('submit',e=>{e.preventDefault();let pid=document.getElementById('productId').value;let p={id:pid||id(),name:document.getElementById('pName').value.trim(),unit:document.getElementById('pUnit').value,price:Number(document.getElementById('pPrice').value),cost:Number(document.getElementById('pCost').value),stock:Number(document.getElementById('pStock').value)};if(pid){let old=db.products.find(x=>x.id===pid);p.stock=old.stock+(p.stock-old.initialStock);delete p.initialStock;db.products=db.products.map(x=>x.id===pid?p:x)}else db.products.push(p);resetProductForm();save()});
+function resetProductForm(){document.getElementById('productForm').reset();document.getElementById('productId').value='';document.getElementById('pStock').value=0;document.getElementById('productFormTitle').textContent='Tambah Produk'}
+function editProduct(pid){let p=db.products.find(x=>x.id===pid);if(!p)return;document.getElementById('productId').value=p.id;document.getElementById('pName').value=p.name;document.getElementById('pUnit').value=p.unit;document.getElementById('pPrice').value=p.price;document.getElementById('pCost').value=p.cost;document.getElementById('pStock').value=p.stock;document.getElementById('productFormTitle').textContent='Edit Produk';showPage('products');window.scrollTo(0,0)}
+function deleteProduct(pid){if(!confirm('Hapus produk ini?'))return;if(db.sales.some(s=>s.productId===pid)||db.purchases.some(x=>x.productId===pid)){alert('Produk sudah memiliki riwayat transaksi sehingga tidak dapat dihapus.');return}db.products=db.products.filter(p=>p.id!==pid);save()}
+document.getElementById('sProduct').addEventListener('change',updateSaleProduct);
+function updateSaleProduct(){let p=db.products.find(x=>x.id===document.getElementById('sProduct').value);document.getElementById('sPrice').value=p?p.price:'';document.getElementById('saleStockInfo').textContent=p?`Stok tersedia: ${num(p.stock)} ${p.unit} • Modal: ${money(p.cost)} per ${p.unit}`:'Pilih produk untuk melihat stok.'}
+document.getElementById('saleForm').addEventListener('submit',e=>{e.preventDefault();let p=db.products.find(x=>x.id===document.getElementById('sProduct').value),qty=Number(document.getElementById('sQty').value),price=Number(document.getElementById('sPrice').value);if(!p){alert('Pilih produk terlebih dahulu.');return}if(qty<=0||qty>p.stock){alert('Jumlah tidak valid atau stok tidak mencukupi.');return}let customer=document.getElementById('sCustomer').value.trim()||'Pelanggan umum';let total=qty*price,cost=qty*p.cost;p.stock-=qty;db.sales.push({id:id(),date:today(),customer,productId:p.id,productName:p.name,unit:p.unit,qty,price,total,cost});if(!db.customers.some(c=>c.name.toLowerCase()===customer.toLowerCase())&&customer!=='Pelanggan umum')db.customers.push({id:id(),name:customer,phone:'',address:''});document.getElementById('saleForm').reset();save();});
+document.getElementById('purchaseForm').addEventListener('submit',e=>{e.preventDefault();let p=db.products.find(x=>x.id===document.getElementById('bProduct').value),qty=Number(document.getElementById('bQty').value),cost=Number(document.getElementById('bCost').value);if(!p||qty<=0||cost<0){alert('Periksa data pembelian.');return}p.stock+=qty;p.cost=cost;db.purchases.push({id:id(),date:today(),supplier:document.getElementById('bSupplier').value.trim(),productId:p.id,productName:p.name,unit:p.unit,qty,total:qty*cost});document.getElementById('purchaseForm').reset();save()});
+document.getElementById('customerForm').addEventListener('submit',e=>{e.preventDefault();db.customers.push({id:id(),name:document.getElementById('cName').value.trim(),phone:document.getElementById('cPhone').value.trim(),address:document.getElementById('cAddress').value.trim()});e.target.reset();save()});
+function deleteCustomer(cid){if(confirm('Hapus pelanggan ini?')){db.customers=db.customers.filter(c=>c.id!==cid);save()}}
+document.getElementById('expenseForm').addEventListener('submit',e=>{e.preventDefault();db.expenses.push({id:id(),date:document.getElementById('eDate').value,desc:document.getElementById('eDesc').value.trim(),amount:Number(document.getElementById('eAmount').value)});e.target.reset();document.getElementById('eDate').value=today();save()});
+function deleteExpense(eid){if(confirm('Hapus pengeluaran ini?')){db.expenses=db.expenses.filter(x=>x.id!==eid);save()}}
+function saveSettings(){db.businessName=document.getElementById('businessName').value.trim()||'UMKM Ayam Potong';db.ownerName=document.getElementById('ownerName').value.trim();save();alert('Pengaturan berhasil disimpan.')}
+function backupData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cadangan-umkm-ayam-potong.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(){let f=document.getElementById('importFile').files[0];if(!f){alert('Pilih file cadangan JSON.');return}let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.products||!x.sales||!x.expenses)throw Error();if(confirm('Impor akan mengganti data saat ini. Lanjutkan?')){db={...defaultData,...x};save();alert('Data berhasil diimpor.')}}catch(e){alert('File tidak valid atau bukan cadangan aplikasi ini.')}};r.readAsText(f)}
+function resetAll(){if(confirm('Yakin ingin menghapus SELURUH data aplikasi?')){localStorage.removeItem(KEY);db=structuredClone(defaultData);renderAll();document.getElementById('businessName').value=db.businessName;document.getElementById('ownerName').value='';alert('Data aplikasi telah direset.')}}
+function exportCSV(){let rows=[['Tanggal','Pelanggan','Produk','Jumlah','Satuan','Pendapatan','Modal','Laba']];db.sales.forEach(s=>rows.push([s.date,s.customer,s.productName,s.qty,s.unit,s.total,s.cost,s.total-s.cost]));let csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='laporan-penjualan-ayam-potong.csv';a.click();URL.revokeObjectURL(a.href)}
+document.getElementById('businessName').value=db.businessName;document.getElementById('ownerName').value=db.ownerName;document.getElementById('eDate').value=today();document.getElementById('today').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});renderAll();
+</script>
+</body>
+</html>
